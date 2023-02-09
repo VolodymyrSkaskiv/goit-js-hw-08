@@ -14,11 +14,12 @@ const refs = {
 populateFormInput();
 
 refs.form.addEventListener('submit', onFormSubmit);
-refs.form.addEventListener('input', onTextareaInput);
-// throttle(onTextareaInput, 200);
+// refs.form.addEventListener('input', onTextareaInput);
 
 refs.form.addEventListener('input', e => {
   formData[e.target.name] = e.target.value;
+  // throttle(onTextareaInput, 200);
+
   console.log(formData);
 });
 
