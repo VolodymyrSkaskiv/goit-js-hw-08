@@ -1,9 +1,6 @@
 // Add imports above this line
 import { galleryItems } from './gallery-items.js';
-// const SimpleLightbox = require('simplelightbox');
-
-import SimpleLightbox from './../../node_modules/simplelightbox/src/simple-lightbox.js';
-// import 'simplelightbox/dist/simple-lightbox.min.css';
+const SimpleLightbox = require('simplelightbox');
 
 const cardMarkup = makeGalleryMarkup(galleryItems);
 const galleryContainer = document.querySelector('.gallery');
