@@ -1,5 +1,7 @@
 // import Playrs from './../../node_modules/@vimeo/player/src/player';
-import Playrs from 'player';
+// import Player from 'player';
+const Player = require('@vimeo/player');
+// import Player from '@vimeo/player';
 
 const iframe = document.querySelector('iframe');
 const player = new Vimeo.Player(iframe);
