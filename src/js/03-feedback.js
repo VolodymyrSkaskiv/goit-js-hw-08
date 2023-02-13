@@ -1,42 +1,46 @@
-// import throttle from 'lodash.throttle';
-// const throttle = require('lodash.throttle');
+import { throttle } from 'lodash';
 
 const formData = {};
 
 const FEEDBACK_FORM = 'feedback-form-state';
 const refs = {
   form: document.querySelector('.feedback-form'),
-  message: document.querySelector('.feedback-form textarea'),
-  email: document.querySelector('.feedback-form input'),
+  message: document.querySelector('textarea[name="message"]'),
+  email: document.querySelector('input[name="email"]'),
 };
 
-populateFormInput();
+populateFormInput(); //відновлення даних після перезагрузки сторінки
 
 refs.form.addEventListener('submit', onFormSubmit);
-// refs.form.addEventListener('input', onTextareaInput);
 
-refs.form.addEventListener('input', e => {
-  formData[e.target.name] = e.target.value;
-  // throttle(onTextareaInput, 200);
+refs.form.addEventListener(
+  'input',
+  throttle(e => {
+    formData[e.target.name] = e.target.value;
 
-  console.log(formData);
-});
+    localStorage.setItem(FEEDBACK_FORM, JSON.stringify(formData));
+  }, 500) // Оновлення сховища раз на 500 мілісекунд
+);
 
 function onFormSubmit(evt) {
   evt.preventDefault();
-  evt.currentTarget.reset();
-  localStorage.remove(FEEDBACK_FORM);
-}
 
-function onTextareaInput(evt) {
-  localStorage.setItem(FEEDBACK_FORM, JSON.stringify(formData));
+  if (refs.message.value === '' || refs.email.value === '') {
+    return alert('Заповніть усі поля перед відправкою форми');
+  }
+  console.log(formData);
+
+  evt.currentTarget.reset(); //очищаємо поля форми
+  localStorage.removeItem(FEEDBACK_FORM); //забираємо FEEDBACK_FORM з localStorage
 }
 
 function populateFormInput() {
   const saveFormData = localStorage.getItem(FEEDBACK_FORM);
-  console.log(saveFormData);
+
   if (saveFormData) {
-    refs.message.value = JSON.parse(saveFormData).message;
-    refs.email.value = JSON.parse(saveFormData).email;
+    refs.message.value = JSON.parse(saveFormData).message || ''; //відновлюємо дані у формі localStorage
+    refs.email.value = JSON.parse(saveFormData).email || '';
+    formData.email = refs.email.value; //відновлюємо formData щоб співпадав з localStorage
+    formData.message = refs.message.value;
   }
 }
